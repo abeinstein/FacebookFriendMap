@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map_canvas { height: 100% }
+    </style>
+    <script type="text/javascript"
+      src="http://maps.googleapis.com/maps/api/js?key=AIzaSyD8qAY0KrKOVBG1GAzKFu0lHmOgzse2XZI&sensor=false">
+    </script>
+		<script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script type="text/javascript">
+      function initialize() {
+				
+	
+				//geocoder = new google.maps.Geocoder();
+			  
+				var center = new google.maps.LatLng(39.8106460, -98.5569760);
+        var mapOptions = {
+          center: center,
+          zoom: 4,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById("map_canvas"),
+            mapOptions);
+				
+				placeMarkers(map);
+      }
+
+			function placeMarkers(map) {
+				console.log("Outside JSON")
+				
+				$.getJSON('location_data.json', function(data) {
+					console.log("Inside jSON");
+					$.each(data, function(key, val) {
+						var address = key;
+						console.log("Address:");
+						var lat = address[0];
+						var lng = address[1];
+						var latlng = new google.maps.LatLng(lat, lng)
+						
+						// Crete new info window
+						var info = new google.maps.InfoWindow({
+							content: String(val)
+						});
+						
+						// Create new marker
+						var marker = new google.maps.Marker({
+							position: latlng,
+							map: map
+						});
+						
+						//Create new event listener
+						google.maps.event.addListener(marker, 'click', function() {
+							info.open(map, marker);
+						});
+					});
+				});
+			}
+					
+						
+						// geocoder.geocode(
+						// 
+						// 								{'address': address},
+						// 								function geo(results, status) {
+						// 										if (status == google.maps.GeocoderStatus.OK) {
+						// 											// Create new info window
+						// 											var info = new google.maps.InfoWindow({
+						// 												content: String(val)
+						// 											});
+						// 
+						// 											// Create new marker
+						// 											var marker = new google.maps.Marker({
+						// 												position: results[0].geometry.location,
+						// 												map: map
+						// 											});
+						// 
+						// 											// Create new event listener
+						// 											google.maps.event.addListener(marker, 'click', function() {
+						// 												info.open(map, marker);
+						// 											});
+						// 										} else if (status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT) { 
+						// 										  setTimeout(function geo(){}, 3000);
+						// 										} else {
+						// 											alert("Geocode not successful: " + status);
+						// 										}
+						// 								}
+						// 							);
+	
+    </script>
+  </head>
+  <body onload="initialize()">
+    <div id="map_canvas" style="width:100%; height:100%"></div>
+  </body>
+</html>
