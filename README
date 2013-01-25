@@ -1,0 +1,6 @@
+This application takes friends from Facebook, uses the Facebook API to 
+gather their current location, and puts them on a map! The motivation for this 
+was twofold: 1) to learn how to use Facebook and GMaps API's, and 2) to 
+get a cool visual where my friends live across the globe!
+
+Not currently finished or developed for public use (the API key is fixed to my account) 
